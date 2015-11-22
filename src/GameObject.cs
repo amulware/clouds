@@ -1,5 +1,4 @@
 ﻿using Bearded.Utilities.Collections;
-using Bearded.Utilities.SpaceTime;
 
 namespace Game
 {
@@ -16,7 +15,7 @@ namespace Game
             game.Add(this);
         }
 
-        public abstract void Update(TimeSpan elapsedTime);
+        public abstract void Update(float elapsedTime);
 
         public abstract void Draw();
 

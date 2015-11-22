@@ -1,16 +1,16 @@
 ﻿using amulware.Graphics;
 using Bearded.Utilities.Collections;
-using Bearded.Utilities.SpaceTime;
-using OpenTK;
 
 namespace Game
 {
     sealed class GameState
     {
         private readonly DeletableObjectList<GameObject> gameObjects = new DeletableObjectList<GameObject>();
-        private Instant time = Instant.Zero;
+        private double time = 0;
+        private float timeF = 0;
 
-        public Instant Time { get { return this.time; } }
+        public double Time { get { return this.time; } }
+        public float TimeF { get { return this.timeF; } }
 
         public GameState()
         {
@@ -24,14 +24,16 @@ namespace Game
 
         public void Update(UpdateEventArgs args)
         {
-            var elapsedTime = new TimeSpan(args.ElapsedTimeInS);
+            var elapsedTime = args.ElapsedTimeInS;
 
             this.time += elapsedTime;
+            this.timeF = (float)this.time;
 
+            var elapsedTimeF = (float)elapsedTime;
 
             foreach (var gameObject in this.gameObjects)
             {
-                gameObject.Update(elapsedTime);
+                gameObject.Update(elapsedTimeF);
             }
         }
 
