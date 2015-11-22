@@ -1,5 +1,5 @@
 ﻿
-namespace Game
+namespace Clouds
 {
     class Program
     {

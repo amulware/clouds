@@ -1,6 +1,6 @@
 ﻿using Bearded.Utilities.Collections;
 
-namespace Game
+namespace Clouds.Game
 {
     abstract class GameObject : IDeletable
     {

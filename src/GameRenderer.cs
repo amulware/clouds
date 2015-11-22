@@ -1,10 +1,11 @@
 ﻿using amulware.Graphics;
 using amulware.Graphics.ShaderManagement;
 using Bearded.Utilities.Math;
+using Clouds.Game;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace Game
+namespace Clouds
 {
     sealed class GameRenderer
     {

@@ -1,9 +1,11 @@
 ﻿using System;
 using amulware.Graphics;
+using Bearded.Utilities.Input;
+using Clouds.Game;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace Game
+namespace Clouds
 {
     sealed class GameWindow : amulware.Graphics.Program
     {
@@ -21,10 +23,14 @@ namespace Game
             this.renderer = new GameRenderer();
 
             this.game = new GameState();
+
+            InputManager.Initialize(null);
         }
 
         protected override void OnUpdate(UpdateEventArgs e)
         {
+            InputManager.Update();
+
             this.game.Update(e);
         }
 

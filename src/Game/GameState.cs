@@ -1,7 +1,7 @@
 ﻿using amulware.Graphics;
 using Bearded.Utilities.Collections;
 
-namespace Game
+namespace Clouds.Game
 {
     sealed class GameState
     {
@@ -14,7 +14,8 @@ namespace Game
 
         public GameState()
         {
-            
+            var ship = new Ship(this, new KeyboardShipController(this));
+            new PlayerView(this, ship);
         }
 
         public void Add(GameObject gameObject)

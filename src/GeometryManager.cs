@@ -2,7 +2,7 @@
 using Bearded.Utilities;
 using OpenTK;
 
-namespace Game
+namespace Clouds
 {
     sealed class GeometryManager : Singleton<GeometryManager>
     {
