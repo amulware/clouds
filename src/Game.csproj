@@ -48,8 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Game\GameObject.cs" />
     <Compile Include="GameRenderer.cs" />
+    <Compile Include="Game\gameObjects\equipment\PositionedEquipment.cs" />
+    <Compile Include="Game\gameObjects\equipment\IEquipment.cs" />
     <Compile Include="Game\interfaces\IPositionable.cs" />
     <Compile Include="Game\gameObjects\PlayerView.cs" />
     <Compile Include="Game\gameObjects\Ship.cs" />

@@ -1,5 +1,7 @@
 ﻿using amulware.Graphics;
 using Bearded.Utilities.Collections;
+using Bearded.Utilities.Math;
+using OpenTK;
 
 namespace Clouds.Game
 {
@@ -16,6 +18,17 @@ namespace Clouds.Game
         {
             var ship = new Ship(this, new KeyboardShipController(this));
             new PlayerView(this, ship);
+
+            ship.AddEquipment(new PositionedEquipment(new Vector2(2, 2), Angle.FromDegrees(90)));
+            ship.AddEquipment(new PositionedEquipment(new Vector2(0.66f, 2), Angle.FromDegrees(90)));
+            ship.AddEquipment(new PositionedEquipment(new Vector2(-0.66f, 2), Angle.FromDegrees(90)));
+            ship.AddEquipment(new PositionedEquipment(new Vector2(-2, 2), Angle.FromDegrees(90)));
+
+            ship.AddEquipment(new PositionedEquipment(new Vector2(2, -2), Angle.FromDegrees(-90)));
+            ship.AddEquipment(new PositionedEquipment(new Vector2(0.66f, -2), Angle.FromDegrees(-90)));
+            ship.AddEquipment(new PositionedEquipment(new Vector2(-0.66f, -2), Angle.FromDegrees(-90)));
+            ship.AddEquipment(new PositionedEquipment(new Vector2(-2, -2), Angle.FromDegrees(-90)));
+
         }
 
         public void Add(GameObject gameObject)

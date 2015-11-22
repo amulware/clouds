@@ -1,4 +1,5 @@
-﻿using amulware.Graphics;
+﻿using System.Collections.Generic;
+using amulware.Graphics;
 using Bearded.Utilities.Math;
 using OpenTK;
 
@@ -8,9 +9,12 @@ namespace Clouds.Game
     {
         private readonly IShipController controller;
 
+        private readonly List<IEquipment> equipment = new List<IEquipment>();
+
         private Vector2 position;
         private Vector2 velocity;
         private Direction2 forwards;
+        private Matrix2 localRotation;
 
         public Vector2 Position { get { return this.position; } }
 
@@ -21,10 +25,24 @@ namespace Clouds.Game
             controller.SetShip(this);
         }
 
+        public void AddEquipment(IEquipment equipment)
+        {
+            equipment.SetOwner(this);
+
+            this.equipment.Add(equipment);
+        }
+
         public override void Update(float elapsedTime)
         {
             var controlState = this.controller.Control(elapsedTime);
 
+            this.updateMovement(controlState, elapsedTime);
+
+            this.updateEquipment(controlState, elapsedTime);
+        }
+
+        private void updateMovement(ShipControlState controlState, float elapsedTime)
+        {
             this.forwards += Angle.FromRadians(controlState.Steer) * elapsedTime;
 
             if (controlState.Accelerate)
@@ -36,8 +54,17 @@ namespace Clouds.Game
 
             this.velocity *= dragFactor;
 
-
             this.position += this.velocity * elapsedTime;
+
+            this.localRotation = Matrix2.CreateRotation(-this.forwards.Radians);
+        }
+
+        private void updateEquipment(ShipControlState controlState, float elapsedTime)
+        {
+            foreach (var e in this.equipment)
+            {
+                e.Update(controlState, elapsedTime);
+            }
         }
 
         public override void Draw()
@@ -54,6 +81,26 @@ namespace Clouds.Game
             geo.LineWidth = 0.3f;
 
             geo.DrawLine(this.position, this.position + this.velocity);
+
+            this.drawEquipment();
+        }
+
+        private void drawEquipment()
+        {
+            foreach (var e in this.equipment)
+            {
+                e.Draw();
+            }
+        }
+
+        public Vector2 LocalToGlobalPosition(Vector2 p)
+        {
+            return this.position + this.localRotation.Transform(p);
+        }
+
+        public Direction2 LocalToGlobalDirection(Angle direction)
+        {
+            return this.forwards + direction;
         }
     }
 }
