@@ -7,6 +7,8 @@ namespace Clouds.Game
 {
     class PositionedEquipment : IEquipment
     {
+        protected readonly GameState game;
+
         private readonly Vector2 positionOffset;
         private readonly Angle directionOffset;
 
@@ -15,8 +17,12 @@ namespace Clouds.Game
         private Vector2 realPosition;
         private Direction2 realDirection;
 
-        public PositionedEquipment(Vector2 positionOffset, Angle directionOffset)
+        public Vector2 Position { get { return this.realPosition; } }
+        public Direction2 Direction { get { return this.realDirection; } }
+
+        public PositionedEquipment(GameState game, Vector2 positionOffset, Angle directionOffset)
         {
+            this.game = game;
             this.positionOffset = positionOffset;
             this.directionOffset = directionOffset;
         }
@@ -29,7 +35,7 @@ namespace Clouds.Game
             this.owner = ship;
         }
 
-        public void Update(ShipControlState controlState, float elapsedTime)
+        public virtual void Update(ShipControlState controlState, float elapsedTime)
         {
             this.realPosition = this.owner.LocalToGlobalPosition(this.positionOffset);
             this.realDirection = this.owner.LocalToGlobalDirection(this.directionOffset);
