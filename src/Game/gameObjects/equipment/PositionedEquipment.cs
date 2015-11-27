@@ -17,6 +17,7 @@ namespace Clouds.Game
         private Vector2 realPosition;
         private Direction2 realDirection;
 
+        public Ship Owner { get { return this.owner; } }
         public Vector2 Position { get { return this.realPosition; } }
         public Direction2 Direction { get { return this.realDirection; } }
 

@@ -8,6 +8,8 @@ namespace Clouds.Game
         private readonly float steer;
         private readonly GunControlGroup controlGroup;
 
+        public static ShipControlState Idle { get { return default(ShipControlState); } }
+
         public ShipControlState(bool accelerate, float steer, GunControlGroup controlGroup)
         {
             this.accelerate = accelerate;

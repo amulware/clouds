@@ -1,22 +1,27 @@
 ﻿using amulware.Graphics;
-using Bearded.Utilities;
 using Bearded.Utilities.Math;
 using OpenTK;
 
 namespace Clouds.Game
 {
-    class Projectile : GameObject
+    class Particle : GameObject
     {
         private Vector2 position;
         private Vector2 velocity;
         private readonly float deathTime;
+        private readonly Color color;
 
-        public Projectile(GameState game, Vector2 position,
-            Vector2 baseVelocity, Direction2 direction, float speed, float lifeTime)
+        public Particle(GameState game, Color color, Vector2 position, Direction2 direction, float speed, float lifeTime)
+            : this(game, color, position, direction.Vector * speed, lifeTime)
+        {
+        }
+
+        public Particle(GameState game, Color color, Vector2 position, Vector2 velocity, float lifeTime)
             : base(game)
         {
+            this.color = color;
             this.position = position;
-            this.velocity = baseVelocity + direction.Vector * speed;
+            this.velocity = velocity;
             this.deathTime = game.TimeF + lifeTime;
         }
 
@@ -26,14 +31,6 @@ namespace Clouds.Game
 
             if (this.game.TimeF > this.deathTime)
             {
-
-                for (int i = 0; i < 10; i++)
-                {
-                    new Particle(this.game, Color.LightBlue, this.position,
-                        Direction2.FromRadians(StaticRandom.Float(GameMath.TwoPi)),
-                        StaticRandom.Float(3), StaticRandom.Float(0.5f, 1)
-                        );
-                }
                 this.Delete();
             }
         }
@@ -41,7 +38,7 @@ namespace Clouds.Game
         public override void Draw()
         {
             var geo = GeometryManager.Instance.Primitives;
-            geo.Color = Color.Cyan;
+            geo.Color = this.color;
             geo.LineWidth = 0.2f;
 
             var d = this.velocity.Normalized() * 0.15f;

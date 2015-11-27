@@ -17,10 +17,12 @@ namespace Clouds.Game
         private Matrix2 localRotation;
 
         public Vector2 Position { get { return this.position; } }
+        public Vector2 Velocity { get { return this.velocity; } }
 
-        public Ship(GameState game, IShipController controller)
+        public Ship(GameState game, Vector2 position, IShipController controller)
             : base(game)
         {
+            this.position = position;
             this.controller = controller;
             controller.SetShip(this);
         }

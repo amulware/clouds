@@ -16,19 +16,22 @@ namespace Clouds.Game
 
         public GameState()
         {
-            var ship = new Ship(this, new KeyboardShipController(this));
+            var ship = new Ship(this, Vector2.Zero, new KeyboardShipController(this));
             new PlayerView(this, ship);
 
-            ship.AddEquipment(new Cannon(this, new Vector2(2, 2), Angle.FromDegrees(90), GunControlGroup.Left));
-            ship.AddEquipment(new Cannon(this, new Vector2(0.66f, 2), Angle.FromDegrees(90), GunControlGroup.Left));
-            ship.AddEquipment(new Cannon(this, new Vector2(-0.66f, 2), Angle.FromDegrees(90), GunControlGroup.Left));
-            ship.AddEquipment(new Cannon(this, new Vector2(-2, 2), Angle.FromDegrees(90), GunControlGroup.Left));
+            for (int i = 0; i < 4; i++)
+            {
+                var x = 2 -1.33f * i;
+                var a = Angle.FromDegrees(90);
+                ship.AddEquipment(new Cannon(this, new Vector2(x, 2), a, GunControlGroup.Left));
+                ship.AddEquipment(new Cannon(this, new Vector2(x, -2), -a, GunControlGroup.Right));
+            }
 
-            ship.AddEquipment(new Cannon(this, new Vector2(2, -2), Angle.FromDegrees(-90), GunControlGroup.Right));
-            ship.AddEquipment(new Cannon(this, new Vector2(0.66f, -2), Angle.FromDegrees(-90), GunControlGroup.Right));
-            ship.AddEquipment(new Cannon(this, new Vector2(-0.66f, -2), Angle.FromDegrees(-90), GunControlGroup.Right));
-            ship.AddEquipment(new Cannon(this, new Vector2(-2, -2), Angle.FromDegrees(-90), GunControlGroup.Right));
-
+            for (int i = 0; i < 5; i++)
+            {
+                var x = i * 20;
+                new Ship(this, new Vector2(x, 50),  new DummyShipController());
+            }
         }
 
         public void Add(GameObject gameObject)

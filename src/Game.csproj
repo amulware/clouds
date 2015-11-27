@@ -55,12 +55,14 @@
     <Compile Include="Game\gameObjects\equipment\GunControlGroup.cs" />
     <Compile Include="Game\gameObjects\equipment\PositionedEquipment.cs" />
     <Compile Include="Game\gameObjects\equipment\IEquipment.cs" />
+    <Compile Include="Game\gameObjects\Particle.cs" />
     <Compile Include="Game\gameObjects\Projectile.cs" />
     <Compile Include="Game\interfaces\IPositionable.cs" />
     <Compile Include="Game\gameObjects\PlayerView.cs" />
     <Compile Include="Game\gameObjects\Ship.cs" />
     <Compile Include="Game\GameState.cs" />
     <Compile Include="GameWindow.cs" />
+    <Compile Include="Game\shipControllers\DummyShipController.cs" />
     <Compile Include="Game\shipControllers\IShipController.cs" />
     <Compile Include="Game\shipControllers\KeyboardShipController.cs" />
     <Compile Include="Game\shipControllers\ShipControlState.cs" />

@@ -34,7 +34,7 @@ namespace Clouds
                 this.resize(width, height);
             }
 
-            GL.ClearColor(0.2f, 0.2f, 0.2f, 0);
+            GL.ClearColor(0.2f, 0.2f, 0.4f, 0);
             GL.Clear(ClearBufferMask.ColorBufferBit);
         }
 
