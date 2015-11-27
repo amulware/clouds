@@ -1,4 +1,5 @@
-﻿using Bearded.Utilities.Math;
+﻿using Bearded.Utilities;
+using Bearded.Utilities.Math;
 using OpenTK;
 
 namespace Clouds.Game
@@ -30,7 +31,11 @@ namespace Clouds.Game
 
         private void shoot()
         {
-            new Projectile(this.game, this.Position, this.Direction, 20, 5);
+            new Projectile(this.game, this.Position,
+                this.Direction + (StaticRandom.Float(-1, 1) * 0.1f).Radians(),
+                40 + StaticRandom.Float(5),
+                1 + StaticRandom.Float(0.3f)
+                );
             this.dontFireUntil = this.game.TimeF + 1;
         }
     }
