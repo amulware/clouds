@@ -1,4 +1,5 @@
 ﻿using amulware.Graphics;
+using Bearded.Utilities;
 using Bearded.Utilities.Math;
 using OpenTK;
 
@@ -23,6 +24,24 @@ namespace Clouds.Game
             this.position = position;
             this.velocity = velocity;
             this.deathTime = game.TimeF + lifeTime;
+        }
+
+        public static void Create(GameState game, int count, Color color, Vector2 position,
+            Direction2 direction, float directionVariance, float speed, float lifeTime)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                new Particle(game, color, position,
+                    direction + (StaticRandom.Float(-1, 1) * directionVariance).Radians(),
+                    StaticRandom.Float(speed), StaticRandom.Float(0.5f, 1) * lifeTime
+                    );
+            }
+        }
+
+        public static void Create(GameState game, int count, Color color, Vector2 position,
+            float speed, float lifeTime)
+        {
+            Particle.Create(game, count, color, position, Direction2.Zero, GameMath.Pi, speed, lifeTime);
         }
 
         public override void Update(float elapsedTime)

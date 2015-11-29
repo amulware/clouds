@@ -40,13 +40,7 @@ namespace Clouds.Game
                 1 + StaticRandom.Float(0.3f)
                 );
 
-            for (int i = 0; i < 10; i++)
-            {
-                new Particle(this.game, Color.Gray, this.Position + this.Direction.Vector,
-                    Direction2.FromRadians(StaticRandom.Float(GameMath.TwoPi)),
-                    StaticRandom.Float(1), StaticRandom.Float(0.5f, 1)
-                    );
-            }
+            Particle.Create(this.game, 10, Color.Gray, this.Position + this.Direction.Vector, 1, 1);
 
             this.dontFireUntil = this.game.TimeF + 1;
         }

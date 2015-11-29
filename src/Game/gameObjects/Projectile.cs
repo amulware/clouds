@@ -39,13 +39,8 @@ namespace Clouds.Game
 
                 if (ship.TryHit(ray, out result))
                 {
-                    for (int i = 0; i < 10; i++)
-                    {
-                        new Particle(this.game, Color.White, result.Point,
-                            Direction2.Of(result.Normal) + (StaticRandom.Float(-1, 1) * 0.3f).Radians(),
-                            StaticRandom.Float(10), StaticRandom.Float(0.25f, 0.5f)
-                            );
-                    }
+                    Particle.Create(this.game, 10, Color.White, result.Point,
+                        Direction2.Of(result.Normal), 0.3f, 10, 0.5f);
                     this.Delete();
                     return;
                 }
@@ -55,13 +50,7 @@ namespace Clouds.Game
 
             if (this.game.TimeF > this.deathTime)
             {
-                for (int i = 0; i < 10; i++)
-                {
-                    new Particle(this.game, Color.LightBlue, this.position,
-                        Direction2.FromRadians(StaticRandom.Float(GameMath.TwoPi)),
-                        StaticRandom.Float(3), StaticRandom.Float(0.5f, 1)
-                        );
-                }
+                Particle.Create(this.game, 10, Color.LightBlue, this.position, 3, 1);
                 this.Delete();
             }
         }
