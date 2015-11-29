@@ -39,7 +39,15 @@ namespace Clouds.Game
             for (int i = 0; i < 5; i++)
             {
                 var x = i * 20;
-                new Ship(this, new Vector2(x, 50),  new SimpleEnemyShipController(this));
+                var s = new Ship(this, new Vector2(x, 50),  new SimpleEnemyShipController(this));
+
+                for (int j = 0; j < 4; j++)
+                {
+                    var x2 = 2 - 1.33f * j;
+                    var a = Angle.FromDegrees(90);
+                    s.AddEquipment(new Cannon(this, new Vector2(x2, 2), a, GunControlGroup.Left));
+                    s.AddEquipment(new Cannon(this, new Vector2(x2, -2), -a, GunControlGroup.Right));
+                }
             }
         }
 
@@ -50,10 +58,10 @@ namespace Clouds.Game
 
         public void Update(UpdateEventArgs args)
         {
-            var elapsedTime = args.ElapsedTimeInS * 5;
+            var elapsedTime = args.ElapsedTimeInS;
 
             if (InputManager.IsKeyPressed(Key.Space))
-                elapsedTime /= 30;
+                elapsedTime /= 3;
 
             this.time += elapsedTime;
             this.timeF = (float)this.time;

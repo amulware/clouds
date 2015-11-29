@@ -64,7 +64,7 @@ namespace Clouds.Game
 
             var directionDifference = this.getSteeringToDirection(targetDirection);
 
-
+#if true
             var geo = GeometryManager.Instance.Primitives;
 
             geo.LineWidth = 0.2f;
@@ -73,15 +73,65 @@ namespace Clouds.Game
             geo.DrawLine(position, targetPosition);
             geo.DrawLine(position, position + this.ship.Direction.Vector * 20);
 
-#if false
-            var sideWays = this.ship.Direction.Vector.PerpendicularLeft;
+            //var sideWays = this.ship.Direction.Vector.PerpendicularLeft;
 
-            geo.LineWidth = 5;
-            geo.Color = Color.Red.WithAlpha(0.1f).Premultiplied;
-            geo.DrawLine(position - sideWays * 50, position + sideWays * 50);
+            //geo.LineWidth = 5;
+            //geo.Color = Color.Red.WithAlpha(0.1f).Premultiplied;
+            //geo.DrawLine(position - sideWays * 50, position + sideWays * 50);
 #endif
+            var gunControlState = this.tryShoot(target);
 
-            return new ShipControlState(true, directionDifference.Radians * 5, GunControlGroup.None);
+            return new ShipControlState(true, directionDifference.Radians * 5, gunControlState);
+        }
+
+        private GunControlGroup tryShoot(Ship target)
+        {
+            var distanceToTarget = (this.ship.Position - target.Position).Length;
+
+            const float projectileSpeed = 40;
+
+            var timeToHit = distanceToTarget / projectileSpeed;
+
+            var targetPoint = target.Position + target.Velocity * timeToHit - this.ship.Velocity * timeToHit;
+
+            GunControlGroup groups = GunControlGroup.None;
+
+            if (isInCone(targetPoint - this.ship.Position, this.ship.Direction + 90.Degrees(), 0.02f, 50))
+            {
+                groups |= GunControlGroup.Left;
+            }
+
+            if (isInCone(targetPoint - this.ship.Position, this.ship.Direction - 90.Degrees(), 0.02f, 50))
+            {
+                groups |= GunControlGroup.Right;
+            }
+
+            return groups;
+        }
+
+        private bool isInCone(Vector2 targetPoint, Direction2 direction, float directionVariance, float range)
+        {
+            if (targetPoint.LengthSquared > range.Squared())
+                return false;
+
+            var isInside = (Direction2.Of(targetPoint) - direction).MagnitudeInRadians < directionVariance;
+
+            var geo = GeometryManager.Instance.Primitives;
+
+            geo.LineWidth = 0.2f;
+            geo.Color = (isInside ? Color.Red : Color.Yellow).WithAlpha(0.3f).Premultiplied;
+
+            var p = this.ship.Position;
+            var c0 = p + (direction + directionVariance.Radians()).Vector * range;
+            var c1 = p + (direction - directionVariance.Radians()).Vector * range;
+
+            geo.DrawLine(p, c0);
+            geo.DrawLine(p, c1);
+            geo.DrawLine(c1, c0);
+
+            geo.DrawCircle(p + targetPoint, 3, false, 4);
+
+            return isInside;
         }
 
         private void updateTargetOffset(Vector2 targetPosition)
