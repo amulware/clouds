@@ -1,7 +1,9 @@
 ﻿using amulware.Graphics;
 using Bearded.Utilities.Collections;
+using Bearded.Utilities.Input;
 using Bearded.Utilities.Math;
 using OpenTK;
+using OpenTK.Input;
 
 namespace Clouds.Game
 {
@@ -9,6 +11,7 @@ namespace Clouds.Game
     {
         private readonly DeletableObjectList<GameObject> gameObjects = new DeletableObjectList<GameObject>();
         private readonly DeletableObjectList<Ship> ships = new DeletableObjectList<Ship>();
+        private readonly DeletableObjectList<Ship> playerShips = new DeletableObjectList<Ship>();
 
         private double time = 0;
         private float timeF = 0;
@@ -17,11 +20,13 @@ namespace Clouds.Game
         public float TimeF { get { return this.timeF; } }
 
         public DeletableObjectList<Ship> Ships { get { return this.ships; } }
+        public DeletableObjectList<Ship> PlayerShips { get { return this.playerShips; } }
 
         public GameState()
         {
             var ship = new Ship(this, Vector2.Zero, new KeyboardShipController(this));
             new PlayerView(this, ship);
+            this.playerShips.Add(ship);
 
             for (int i = 0; i < 4; i++)
             {
@@ -34,7 +39,7 @@ namespace Clouds.Game
             for (int i = 0; i < 5; i++)
             {
                 var x = i * 20;
-                new Ship(this, new Vector2(x, 50),  new DummyShipController());
+                new Ship(this, new Vector2(x, 50),  new SimpleEnemyShipController(this));
             }
         }
 
@@ -45,7 +50,10 @@ namespace Clouds.Game
 
         public void Update(UpdateEventArgs args)
         {
-            var elapsedTime = args.ElapsedTimeInS;
+            var elapsedTime = args.ElapsedTimeInS * 5;
+
+            if (InputManager.IsKeyPressed(Key.Space))
+                elapsedTime /= 30;
 
             this.time += elapsedTime;
             this.timeF = (float)this.time;

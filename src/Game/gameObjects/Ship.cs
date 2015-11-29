@@ -18,6 +18,7 @@ namespace Clouds.Game
 
         public Vector2 Position { get { return this.position; } }
         public Vector2 Velocity { get { return this.velocity; } }
+        public Direction2 Direction { get { return this.forwards; } }
 
         public Ship(GameState game, Vector2 position, IShipController controller)
             : base(game)
@@ -54,7 +55,7 @@ namespace Clouds.Game
                 this.velocity += this.forwards.Vector * 5 * elapsedTime;
             }
 
-            var dragFactor = GameMath.Pow(0.8f, elapsedTime);
+            var dragFactor = Mathf.Pow(0.8f, elapsedTime);
 
             this.velocity *= dragFactor;
 
