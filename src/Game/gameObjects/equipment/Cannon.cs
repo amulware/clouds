@@ -32,7 +32,8 @@ namespace Clouds.Game
 
         private void shoot()
         {
-            new Projectile(this.game, this.Position,
+            new Projectile(this.game, this.Owner,
+                this.Position,
                 this.Owner.Velocity,
                 this.Direction + (StaticRandom.Float(-1, 1) * 0.1f).Radians(),
                 40 + StaticRandom.Float(5),

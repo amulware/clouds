@@ -7,14 +7,17 @@ namespace Clouds.Game
 {
     class Projectile : GameObject
     {
+        private readonly Ship owner;
+
         private Vector2 position;
         private Vector2 velocity;
         private readonly float deathTime;
 
-        public Projectile(GameState game, Vector2 position,
+        public Projectile(GameState game, Ship owner, Vector2 position,
             Vector2 baseVelocity, Direction2 direction, float speed, float lifeTime)
             : base(game)
         {
+            this.owner = owner;
             this.position = position;
             this.velocity = baseVelocity + direction.Vector * speed;
             this.deathTime = game.TimeF + lifeTime;
@@ -22,11 +25,36 @@ namespace Clouds.Game
 
         public override void Update(float elapsedTime)
         {
-            this.position += this.velocity * elapsedTime;
+            var vDelta = this.velocity * elapsedTime;
+
+            var ray = new Ray(this.position, vDelta);
+            foreach (var ship in this.game.Ships)
+            {
+                if (ship == this.owner)
+                {
+                    continue;
+                }
+
+                HitResult result;
+
+                if (ship.TryHit(ray, out result))
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        new Particle(this.game, Color.White, result.Point,
+                            Direction2.Of(result.Normal) + (StaticRandom.Float(-1, 1) * 0.3f).Radians(),
+                            StaticRandom.Float(10), StaticRandom.Float(0.25f, 0.5f)
+                            );
+                    }
+                    this.Delete();
+                    return;
+                }
+            }
+
+            this.position += vDelta;
 
             if (this.game.TimeF > this.deathTime)
             {
-
                 for (int i = 0; i < 10; i++)
                 {
                     new Particle(this.game, Color.LightBlue, this.position,

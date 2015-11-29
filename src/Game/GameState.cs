@@ -8,11 +8,15 @@ namespace Clouds.Game
     sealed class GameState
     {
         private readonly DeletableObjectList<GameObject> gameObjects = new DeletableObjectList<GameObject>();
+        private readonly DeletableObjectList<Ship> ships = new DeletableObjectList<Ship>();
+
         private double time = 0;
         private float timeF = 0;
 
         public double Time { get { return this.time; } }
         public float TimeF { get { return this.timeF; } }
+
+        public DeletableObjectList<Ship> Ships { get { return this.ships; } }
 
         public GameState()
         {

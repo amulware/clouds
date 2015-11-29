@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
+    <Compile Include="Game\CollisionCircle.cs" />
     <Compile Include="Game\GameObject.cs" />
     <Compile Include="GameRenderer.cs" />
     <Compile Include="Game\gameObjects\equipment\Cannon.cs" />
@@ -57,6 +58,8 @@
     <Compile Include="Game\gameObjects\equipment\IEquipment.cs" />
     <Compile Include="Game\gameObjects\Particle.cs" />
     <Compile Include="Game\gameObjects\Projectile.cs" />
+    <Compile Include="Game\HitResult.cs" />
+    <Compile Include="Game\Ray.cs" />
     <Compile Include="Game\interfaces\IPositionable.cs" />
     <Compile Include="Game\gameObjects\PlayerView.cs" />
     <Compile Include="Game\gameObjects\Ship.cs" />

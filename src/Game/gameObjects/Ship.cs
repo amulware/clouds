@@ -25,6 +25,8 @@ namespace Clouds.Game
             this.position = position;
             this.controller = controller;
             controller.SetShip(this);
+
+            game.Ships.Add(this);
         }
 
         public void AddEquipment(IEquipment equipment)
@@ -103,6 +105,23 @@ namespace Clouds.Game
         public Direction2 LocalToGlobalDirection(Angle direction)
         {
             return this.forwards + direction;
+        }
+
+        public bool TryHit(Ray ray, out HitResult result)
+        {
+            var circle = new CollisionCircle(this.position, 3);
+
+            float f;
+            Vector2 p, n;
+
+            if (circle.TryHit(ray.Position, ray.VDelta, out f, out p, out n))
+            {
+                result = new HitResult(p, n);
+                return true;
+            }
+
+            result = default(HitResult);
+            return false;
         }
     }
 }
