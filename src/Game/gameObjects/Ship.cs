@@ -8,6 +8,8 @@ namespace Clouds.Game
     class Ship : GameObject, IPositionable
     {
         private readonly IShipController controller;
+        private readonly float acceleration;
+        private readonly float maxHealth = 100;
 
         private readonly List<IEquipment> equipment = new List<IEquipment>();
 
@@ -15,16 +17,18 @@ namespace Clouds.Game
         private Vector2 velocity;
         private Direction2 forwards;
         private Matrix2 localRotation;
+        private float health = 100;
 
         public Vector2 Position { get { return this.position; } }
         public Vector2 Velocity { get { return this.velocity; } }
         public Direction2 Direction { get { return this.forwards; } }
 
-        public Ship(GameState game, Vector2 position, IShipController controller)
+        public Ship(GameState game, Vector2 position, IShipController controller, float acceleration = 5)
             : base(game)
         {
             this.position = position;
             this.controller = controller;
+            this.acceleration = acceleration;
             controller.SetShip(this);
 
             game.Ships.Add(this);
@@ -37,8 +41,18 @@ namespace Clouds.Game
             this.equipment.Add(equipment);
         }
 
+        public void DealDamage(float damage)
+        {
+            this.health -= damage;
+        }
+
         public override void Update(float elapsedTime)
         {
+            if (this.health < 0)
+            {
+                this.Delete();
+            }
+
             var controlState = this.controller.Control(elapsedTime);
 
             this.updateMovement(controlState, elapsedTime);
@@ -52,7 +66,7 @@ namespace Clouds.Game
 
             if (controlState.Accelerate)
             {
-                this.velocity += this.forwards.Vector * 5 * elapsedTime;
+                this.velocity += this.forwards.Vector * this.acceleration * elapsedTime;
             }
 
             var dragFactor = Mathf.Pow(0.8f, elapsedTime);
@@ -86,6 +100,17 @@ namespace Clouds.Game
             geo.LineWidth = 0.3f;
 
             geo.DrawLine(this.position, this.position + this.velocity);
+
+
+            var healthBarLength = 8f;
+            var healthBarStart = this.position + new Vector2(-healthBarLength / 2, -5);
+            var healthPercentage = this.health / this.maxHealth;
+
+            geo.Color = Color.Gray;
+            geo.DrawRectangle(healthBarStart, new Vector2(healthBarLength, 0.5f));
+
+            geo.Color = Color.Lerp(Color.Red, Color.Green, healthPercentage);
+            geo.DrawRectangle(healthBarStart, new Vector2(healthBarLength * healthPercentage, 0.5f));
 
             this.drawEquipment();
         }
@@ -123,6 +148,11 @@ namespace Clouds.Game
 
             result = default(HitResult);
             return false;
+        }
+
+        protected override void onDelete()
+        {
+            Particle.Create(this.game, 500, Color.Pink, this.position, 10, 3);
         }
     }
 }

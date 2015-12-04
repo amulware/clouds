@@ -39,6 +39,7 @@ namespace Clouds.Game
 
                 if (ship.TryHit(ray, out result))
                 {
+                    ship.DealDamage(1);
                     Particle.Create(this.game, 10, Color.White, result.Point,
                         Direction2.Of(result.Normal), 0.3f, 10, 0.5f);
                     this.Delete();

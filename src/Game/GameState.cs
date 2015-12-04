@@ -36,18 +36,11 @@ namespace Clouds.Game
                 ship.AddEquipment(new Cannon(this, new Vector2(x, -2), -a, GunControlGroup.Right));
             }
 
+            var shipFactory = new ShipFactory(this);
+
             for (int i = 0; i < 5; i++)
             {
-                var x = i * 20;
-                var s = new Ship(this, new Vector2(x, 50),  new SimpleEnemyShipController(this));
-
-                for (int j = 0; j < 4; j++)
-                {
-                    var x2 = 2 - 1.33f * j;
-                    var a = Angle.FromDegrees(90);
-                    s.AddEquipment(new Cannon(this, new Vector2(x2, 2), a, GunControlGroup.Left));
-                    s.AddEquipment(new Cannon(this, new Vector2(x2, -2), -a, GunControlGroup.Right));
-                }
+                shipFactory.MakeShip(new Vector2(i * 20, 50));
             }
         }
 
@@ -61,7 +54,7 @@ namespace Clouds.Game
             var elapsedTime = args.ElapsedTimeInS;
 
             if (InputManager.IsKeyPressed(Key.Space))
-                elapsedTime /= 3;
+                elapsedTime *= 3;
 
             this.time += elapsedTime;
             this.timeF = (float)this.time;

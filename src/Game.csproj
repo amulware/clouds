@@ -70,6 +70,7 @@
     <Compile Include="Game\shipControllers\KeyboardShipController.cs" />
     <Compile Include="Game\shipControllers\ShipControlState.cs" />
     <Compile Include="Game\shipControllers\SimpleEnemyShipController.cs" />
+    <Compile Include="Game\ShipFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GeometryManager.cs" />

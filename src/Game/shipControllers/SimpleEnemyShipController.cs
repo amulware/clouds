@@ -64,7 +64,7 @@ namespace Clouds.Game
 
             var directionDifference = this.getSteeringToDirection(targetDirection);
 
-#if true
+#if false
             var geo = GeometryManager.Instance.Primitives;
 
             geo.LineWidth = 0.2f;
@@ -116,6 +116,8 @@ namespace Clouds.Game
 
             var isInside = (Direction2.Of(targetPoint) - direction).MagnitudeInRadians < directionVariance;
 
+#if false
+
             var geo = GeometryManager.Instance.Primitives;
 
             geo.LineWidth = 0.2f;
@@ -130,6 +132,8 @@ namespace Clouds.Game
             geo.DrawLine(c1, c0);
 
             geo.DrawCircle(p + targetPoint, 3, false, 4);
+
+#endif
 
             return isInside;
         }
