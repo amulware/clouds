@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using amulware.Graphics;
 using Bearded.Utilities.Math;
 using OpenTK;
@@ -67,6 +69,33 @@ namespace Clouds.Game
             this.updateMovement(controlState, elapsedTime);
 
             this.updateEquipment(controlState, elapsedTime);
+
+            foreach (var ship in this.game.Ships.SkipWhile(s => s != this).Skip(1))
+            {
+                var difference = this.position - ship.position;
+
+                var dSquared = difference.LengthSquared;
+
+                if (dSquared == 0)
+                    return;
+
+                var collisionDistance = 6f;
+                var collisionDistanceSquared = collisionDistance.Squared();
+
+                if (dSquared > collisionDistanceSquared)
+                    continue;
+
+                var f = collisionDistanceSquared - dSquared;
+
+                var d = dSquared.Sqrted();
+
+                var diffNormal = difference / d;
+
+                var impulse = diffNormal * (f * elapsedTime);
+
+                this.velocity += impulse;
+                ship.velocity -= impulse;
+            }
         }
 
         private void updateMovement(ShipControlState controlState, float elapsedTime)
