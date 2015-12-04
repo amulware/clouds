@@ -1,4 +1,5 @@
-﻿using Bearded.Utilities;
+﻿using System;
+using Bearded.Utilities;
 using Bearded.Utilities.Math;
 using OpenTK;
 
@@ -13,11 +14,15 @@ namespace Clouds.Game
             this.game = game;
         }
 
-        public void MakeShip(Vector2 position)
+        public void MakeShip(Vector2 position, int faction,
+            int minCannons = 2, int maxCannons = 5, Direction2 direction = default(Direction2))
         {
-            var cannons = StaticRandom.Int(2, 5);
+            var cannons = StaticRandom.Int(minCannons, maxCannons + 1);
 
-            var s = new Ship(this.game, position, new SimpleEnemyShipController(this.game), 11 - 3f/2f * cannons);
+            var s = new Ship(this.game, position,
+                new SimpleEnemyShipController(this.game), faction,
+                11 - 3f / 2f * cannons, direction, Math.Min(0.4f + 0.1f * cannons, 0.9f)
+                );
 
             for (int j = 0; j < cannons; j++)
             {

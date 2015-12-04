@@ -27,7 +27,7 @@ namespace Clouds.Game
 
             SurfaceManager.Instance.ModelviewMatrix.Matrix
                 = Matrix4.LookAt(
-                    xy.WithZ(150), xy.WithZ(), new Vector3(0, 1, 0)
+                    xy.WithZ(300), xy.WithZ(), new Vector3(0, 1, 0)
                 );
         }
 

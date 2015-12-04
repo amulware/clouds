@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using amulware.Graphics;
+using Bearded.Utilities.Linq;
 using Bearded.Utilities.Math;
 using OpenTK;
 
@@ -14,6 +15,8 @@ namespace Clouds.Game
         private Vector2 targetOffset;
         private Vector2 targetNormal;
 
+        private Ship target;
+
         public SimpleEnemyShipController(GameState game)
         {
             this.game = game;
@@ -21,7 +24,13 @@ namespace Clouds.Game
 
         public ShipControlState Control(float elapsedTime)
         {
-            var target = this.game.PlayerShips.FirstOrDefault();
+            if (this.target == null || this.target.Deleted)
+            {
+                this.target = this.game.Ships.RandomElement();
+                if (this.target.Faction == this.ship.Faction)
+                    this.target = null;
+            }
+            var target = this.target;//this.game.PlayerShips.FirstOrDefault();
 
             if (target == null)
                 return ShipControlState.Idle;
@@ -72,6 +81,8 @@ namespace Clouds.Game
             geo.DrawCircle(targetPosition, 5, false);
             geo.DrawLine(position, targetPosition);
             geo.DrawLine(position, position + this.ship.Direction.Vector * 20);
+            geo.Color = Color.Red.WithAlpha(0.3f).Premultiplied;
+            geo.DrawLine(position, target.Position);
 
             //var sideWays = this.ship.Direction.Vector.PerpendicularLeft;
 

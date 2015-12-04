@@ -24,7 +24,10 @@ namespace Clouds.Game
 
         public GameState()
         {
-            var ship = new Ship(this, Vector2.Zero, new KeyboardShipController(this));
+            int playerFaction = 0;
+            int enemyFaction = 1;
+
+            var ship = new Ship(this, Vector2.Zero, new KeyboardShipController(this), playerFaction);
             new PlayerView(this, ship);
             this.playerShips.Add(ship);
 
@@ -40,8 +43,11 @@ namespace Clouds.Game
 
             for (int i = 0; i < 5; i++)
             {
-                shipFactory.MakeShip(new Vector2(i * 20, 50));
+                shipFactory.MakeShip(new Vector2(100, -40 + i * 20), enemyFaction, direction:Direction2.FromDegrees(180));
             }
+
+            shipFactory.MakeShip(new Vector2(0, 15), playerFaction, 2, 3);
+            shipFactory.MakeShip(new Vector2(0, -15), playerFaction, 2, 3);
         }
 
         public void Add(GameObject gameObject)

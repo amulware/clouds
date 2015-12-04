@@ -10,6 +10,8 @@ namespace Clouds.Game
         private readonly IShipController controller;
         private readonly float acceleration;
         private readonly float maxHealth = 100;
+        private readonly int faction;
+        private readonly float inverseFriction;
 
         private readonly List<IEquipment> equipment = new List<IEquipment>();
 
@@ -23,12 +25,19 @@ namespace Clouds.Game
         public Vector2 Velocity { get { return this.velocity; } }
         public Direction2 Direction { get { return this.forwards; } }
 
-        public Ship(GameState game, Vector2 position, IShipController controller, float acceleration = 5)
+        public int Faction { get { return this.faction; } }
+
+        public Ship(GameState game, Vector2 position,
+            IShipController controller, int faction = 0, float acceleration = 5,
+            Direction2 direction = default(Direction2), float inverseFriction = 0.8f)
             : base(game)
         {
             this.position = position;
             this.controller = controller;
+            this.faction = faction;
             this.acceleration = acceleration;
+            this.forwards = direction;
+            this.inverseFriction = inverseFriction;
             controller.SetShip(this);
 
             game.Ships.Add(this);
@@ -69,7 +78,7 @@ namespace Clouds.Game
                 this.velocity += this.forwards.Vector * this.acceleration * elapsedTime;
             }
 
-            var dragFactor = Mathf.Pow(0.8f, elapsedTime);
+            var dragFactor = Mathf.Pow(this.inverseFriction, elapsedTime);
 
             this.velocity *= dragFactor;
 
@@ -90,7 +99,7 @@ namespace Clouds.Game
         {
             var geo = GeometryManager.Instance.Primitives;
 
-            geo.Color = Color.AliceBlue;
+            geo.Color = Color.FromHSVA(this.faction, 0.7f, 0.8f);
             geo.LineWidth = 1;
 
             geo.DrawCircle(this.position, 3);
