@@ -27,7 +27,7 @@ namespace Clouds.Game
 
             SurfaceManager.Instance.ModelviewMatrix.Matrix
                 = Matrix4.LookAt(
-                    xy.WithZ(300), xy.WithZ(), new Vector3(0, 1, 0)
+                    xy.WithZ(200), xy.WithZ(), new Vector3(0, 1, 0)
                 );
         }
 
@@ -43,8 +43,8 @@ namespace Clouds.Game
 
             var geo = GeometryManager.Instance.Primitives;
 
-            geo.Color = Color.LightGray;
-            geo.LineWidth = 0.1f;
+            geo.Color = Color.LightGray.WithAlpha(0.3f).Premultiplied;
+            geo.LineWidth = 0.3f;
 
             for (int i = 0; i <= lines; i++)
             {
